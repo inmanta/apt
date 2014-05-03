@@ -30,7 +30,7 @@ end
 implement Repository using simpleRepo
 
 implementation simpleRepo for Repository:
-    self.path = "/etc/apt/sources.list.d/{{ name }}"
+    self.path = "/etc/apt/sources.list.d/{{ name }}.list"
     self.mode = 644
     self.owner = "root"
     self.group = "root"
