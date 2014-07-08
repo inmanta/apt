@@ -35,5 +35,5 @@ implementation simpleRepo for Repository:
     self.owner = "root"
     self.group = "root"
 
-    self.content = template("apt/repo.tmpl")
+    self.content = std::template("apt/repo.tmpl")
 end
