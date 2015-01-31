@@ -1,6 +1,7 @@
 author: Bart Vanbrabant <bart@impera.io>
 license: Apache 2.0
 name: apt
-requires: {std: 'git@github.com:bartv/imp-std, ">= 0.1"'}
-source: git@github.com:bartv/imp-apt
-version: 0.2.1
+source: git@github.com:impera-io/apt
+version: 0.2.2
+requires:
+    std: git@github.com:impera-io/std, ">= 0.1"
