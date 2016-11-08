@@ -16,7 +16,7 @@
     Contact: code@inmanta.com
 """
 
-entity Repository extends std::File:
+entity Repository:
     """
     An apt repository
     """
@@ -26,13 +26,10 @@ entity Repository extends std::File:
     string repo
 end
 
+std::Host host [1] -- [0:] Repository repository
+
 implement Repository using simpleRepo
 
 implementation simpleRepo for Repository:
-    self.path = "/etc/apt/sources.list.d/{{ name }}.list"
-    self.mode = 644
-    self.owner = "root"
-    self.group = "root"
-
-    self.content = std::template("apt/repo.tmpl")
+    std::ConfigFile(host=host, path="/etc/apt/sources.list.d/{{ name }}.list", content=std::template("apt/repo.tmpl"))
 end
