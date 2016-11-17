@@ -1,6 +1,4 @@
 author: Inmanta <code@inmanta.com>
 license: Apache 2.0
 name: apt
-version: 0.2.4
-requires:
-- std
+version: 0.2.5
