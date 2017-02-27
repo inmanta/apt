@@ -1,5 +1,5 @@
 """
-    Copyright 2016 Inmanta
+    Copyright 2017 Inmanta
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,5 +31,6 @@ std::Host host [1] -- [0:] Repository repository
 implement Repository using simpleRepo
 
 implementation simpleRepo for Repository:
-    std::ConfigFile(host=host, path="/etc/apt/sources.list.d/{{ name }}.list", content=std::template("apt/repo.tmpl"))
+    std::ConfigFile(host=host, path="/etc/apt/sources.list.d/{{ name }}.list", content=std::template("apt/repo.tmpl"),
+                    provides=self.provides)
 end
