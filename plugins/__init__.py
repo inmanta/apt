@@ -17,13 +17,12 @@
 """
 from inmanta.export import dependency_manager
 from collections import defaultdict
-from inmanta.resources import Resource, resource, ResourceNotFoundExcpetion
 from inmanta.agent.handler import provider, ResourceHandler, cache
-from inmanta.execute.util import Unknown
 
 import logging
 
 LOGGER = logging.getLogger(__name__)
+
 
 @dependency_manager
 def apt_dependencies(config_model, resource_model):
@@ -44,7 +43,7 @@ def apt_dependencies(config_model, resource_model):
                 pkg.requires.add(repo)
 
 
-@provider("std::Package", name = "apt")
+@provider("std::Package", name="apt")
 class AptPackage(ResourceHandler):
     """
         A Package handler that uses apt
@@ -52,14 +51,14 @@ class AptPackage(ResourceHandler):
         TODO: add latest support
     """
     def __init__(self, agent, io=None):
-         super().__init__(agent, io)
+        super().__init__(agent, io)
 
     @cache(cacheNone=True)
     def run_update(self, version):
         LOGGER.info("Running apt-get update")
         self._io.run("/usr/bin/apt-get", ["update"])
 
-    def pre(self, resource):
+    def pre(self, ctx, resource):
         """
             Ensure that apt-get update is execute upfront
         """
@@ -68,11 +67,11 @@ class AptPackage(ResourceHandler):
     def available(self, resource):
         return (self._io.file_exists("/usr/bin/dpkg")) and self._io.file_exists("/usr/bin/apt-get")
 
-    def check_resource(self, resource):
+    def check_resource(self, ctx, resource):
         dpkg_output = self._io.run("/usr/bin/dpkg", ["-s", resource.name])
 
         if len(dpkg_output[1]) > 0:
-            return {"state" : "removed" }
+            return {"state": "removed"}
 
         lines = dpkg_output[0].split("\n")
         state = {}
@@ -86,8 +85,8 @@ class AptPackage(ResourceHandler):
 
         return {"state": "installed"}
 
-    def list_changes(self, resource):
-        state = self.check_resource(resource)
+    def list_changes(self, ctx, resource):
+        state = self.check_resource(ctx, resource)
 
         changes = {}
         if resource.state == "removed":
@@ -104,14 +103,14 @@ class AptPackage(ResourceHandler):
         if result[2] > 0:
             raise Exception("An error occured while executing apt: " + result[1])
 
-    def do_changes(self, resource):
-        changes = self.list_changes(resource)
+    def do_changes(self, ctx, resource):
+        changes = self.list_changes(ctx, resource)
         changed = False
 
         env = {"LANG": "C", "DEBCONF_NONINTERACTIVE_SEEN": "true", "DEBIAN_FRONTEND": "noninteractive",
-               "PATH" : "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"}
+               "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"}
         if "state" in changes:
-            if changes["state"][1] == "removed": 
+            if changes["state"][1] == "removed":
                 self._result(self._io.run("/usr/bin/apt-get", ["-qq", "--yes", "remove", resource.name], env))
 
             elif changes["state"][1] == "installed":
@@ -119,4 +118,3 @@ class AptPackage(ResourceHandler):
                 changed = True
 
         return changed
-
