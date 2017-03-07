@@ -103,8 +103,7 @@ class AptPackage(ResourceHandler):
         if result[2] > 0:
             raise Exception("An error occured while executing apt: " + result[1])
 
-    def do_changes(self, ctx, resource):
-        changes = self.list_changes(ctx, resource)
+    def do_changes(self, ctx, resource, changes):
         changed = False
 
         env = {"LANG": "C", "DEBCONF_NONINTERACTIVE_SEEN": "true", "DEBIAN_FRONTEND": "noninteractive",
