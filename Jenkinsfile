@@ -32,7 +32,7 @@ pipeline {
       steps{
         script{
           sh'''
-          ${WORKSPACE}/env/bin/pytest tests
+          ${WORKSPACE}/env/bin/pytest tests -v
           '''
         }
       }
