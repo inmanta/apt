@@ -15,6 +15,7 @@ pipeline {
           sh'''
           python3 -m venv ${WORKSPACE}/env
           ${WORKSPACE}/env/bin/pip install -r requirements.dev.txt
+          ${WORKSPACE}/env/bin/pip install pytest-inmanta -i pypi_index
           '''
         }
       }
