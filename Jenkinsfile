@@ -9,7 +9,7 @@ pipeline {
     string(name: 'pypi_index', defaultValue: 'https://artifacts.internal.inmanta.com/inmanta/stable', description: 'Changes the index used to install pytest-inmanta (And only pytest-inmanta)')
   }
   stages {
-    stage("setup") {
+    stage("setup"){
       steps{
         script{
           sh'''
@@ -20,14 +20,22 @@ pipeline {
       }
     }
     stage("code linting"){
-      sh'''
-      ${WORKSPACE}/env/bin/flake8 plugins tests
-      '''
+      steps{
+        script{
+          sh'''
+          ${WORKSPACE}/env/bin/flake8 plugins tests
+          '''
+        }
+      }
     }
   }
   stage("tests"){
-    sh'''
-    ${WORKSPACE}/env/bin/pytest tests
-    '''
+    steps{
+      script{
+        sh'''
+        ${WORKSPACE}/env/bin/pytest tests
+        '''
+      }
+    }
   }
 }
