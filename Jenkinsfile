@@ -28,13 +28,13 @@ pipeline {
         }
       }
     }
-  }
-  stage("tests"){
-    steps{
-      script{
-        sh'''
-        ${WORKSPACE}/env/bin/pytest tests
-        '''
+    stage("tests"){
+      steps{
+        script{
+          sh'''
+          ${WORKSPACE}/env/bin/pytest tests
+          '''
+        }
       }
     }
   }
