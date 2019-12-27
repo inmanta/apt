@@ -32,8 +32,9 @@ pipeline {
       steps{
         script{
           sh'''
-          ${WORKSPACE}/env/bin/pytest tests -v
+          ${WORKSPACE}/env/bin/pytest tests -v --junitxml=junit.xml
           '''
+          junit 'junit.xml'
         }
       }
     }
