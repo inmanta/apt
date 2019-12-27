@@ -42,4 +42,13 @@ pipeline {
       }
     }
   }
+  post{
+    always{
+      script{
+        sh'''
+        ${WORKSPACE}/env/bin/pip uninstall -y pytest-inmanta
+        '''
+      }
+    }
+  }
 }
