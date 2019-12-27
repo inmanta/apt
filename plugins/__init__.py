@@ -15,11 +15,11 @@
 
     Contact: code@inmanta.com
 """
-from inmanta.export import dependency_manager
-from collections import defaultdict
-from inmanta.agent.handler import provider, ResourceHandler, cache
-
 import logging
+from collections import defaultdict
+
+from inmanta.agent.handler import ResourceHandler, cache, provider
+from inmanta.export import dependency_manager
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,7 +30,9 @@ def apt_dependencies(config_model, resource_model):
     pkgs = defaultdict(list)
 
     for _, resource in resource_model.items():
-        if resource.id.entity_type == "std::File" and resource.path.startswith("/etc/apt/sources.list.d/"):
+        if resource.id.entity_type == "std::File" and resource.path.startswith(
+            "/etc/apt/sources.list.d/"
+        ):
             repo_files[resource.id.agent_name].append(resource)
 
         elif resource.id.entity_type == "std::Package":
@@ -50,6 +52,7 @@ class AptPackage(ResourceHandler):
 
         TODO: add latest support
     """
+
     def __init__(self, agent, io=None):
         super().__init__(agent, io)
 
@@ -65,7 +68,9 @@ class AptPackage(ResourceHandler):
         self.run_update(resource.id.version)
 
     def available(self, resource):
-        return (self._io.file_exists("/usr/bin/dpkg")) and self._io.file_exists("/usr/bin/apt-get")
+        return (self._io.file_exists("/usr/bin/dpkg")) and self._io.file_exists(
+            "/usr/bin/apt-get"
+        )
 
     def check_resource(self, ctx, resource):
         dpkg_output = self._io.run("/usr/bin/dpkg", ["-s", resource.name])
@@ -106,14 +111,30 @@ class AptPackage(ResourceHandler):
     def do_changes(self, ctx, resource, changes):
         changed = False
 
-        env = {"LANG": "C", "DEBCONF_NONINTERACTIVE_SEEN": "true", "DEBIAN_FRONTEND": "noninteractive",
-               "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"}
+        env = {
+            "LANG": "C",
+            "DEBCONF_NONINTERACTIVE_SEEN": "true",
+            "DEBIAN_FRONTEND": "noninteractive",
+            "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        }
         if "state" in changes:
             if changes["state"][1] == "removed":
-                self._result(self._io.run("/usr/bin/apt-get", ["-qq", "--yes", "remove", resource.name], env))
+                self._result(
+                    self._io.run(
+                        "/usr/bin/apt-get",
+                        ["-qq", "--yes", "remove", resource.name],
+                        env,
+                    )
+                )
 
             elif changes["state"][1] == "installed":
-                self._result(self._io.run("/usr/bin/apt-get", ["-qq", "--yes", "--force-yes", "install", resource.name], env))
+                self._result(
+                    self._io.run(
+                        "/usr/bin/apt-get",
+                        ["-qq", "--yes", "--force-yes", "install", resource.name],
+                        env,
+                    )
+                )
                 changed = True
 
         return changed
