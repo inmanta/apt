@@ -27,7 +27,7 @@ entity Repository:
     bool trusted=false
 end
 
-std::Host host [1] -- [0:] Repository repository
+std::Host.repository [0:] -- Repository.host [1]
 
 implement Repository using simpleRepo
 
