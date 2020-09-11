@@ -48,9 +48,9 @@ def apt_dependencies(config_model, resource_model):
 @provider("std::Package", name="apt")
 class AptPackage(ResourceHandler):
     """
-        A Package handler that uses apt
+    A Package handler that uses apt
 
-        TODO: add latest support
+    TODO: add latest support
     """
 
     def __init__(self, agent, io=None):
@@ -63,7 +63,7 @@ class AptPackage(ResourceHandler):
 
     def pre(self, ctx, resource):
         """
-            Ensure that apt-get update is execute upfront
+        Ensure that apt-get update is execute upfront
         """
         self.run_update(resource.id.version)
 
