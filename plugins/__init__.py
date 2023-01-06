@@ -131,7 +131,15 @@ class AptPackage(ResourceHandler):
                 self._result(
                     self._io.run(
                         "/usr/bin/apt-get",
-                        ["-qq", "--yes", "--force-yes", "install", resource.name],
+                        [
+                            "-qq",
+                            "--yes",
+                            "--allow-downgrades",
+                            "--allow-remove-essential",
+                            "--allow-change-held-packages",
+                            "install",
+                            resource.name,
+                        ],
                         env,
                     )
                 )
