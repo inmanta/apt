@@ -1,5 +1,5 @@
 author: Inmanta <code@inmanta.com>
 license: Apache 2.0
 name: apt
-version: 0.4.22.dev0
+version: 0.4.22
 compiler_version: 2017.1
