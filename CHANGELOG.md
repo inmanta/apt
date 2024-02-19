@@ -2,6 +2,7 @@
 
 ## v0.4.24 - ?
 
+- remove a todo from the docs
 
 ## v0.4.23 - 2023-12-08
 

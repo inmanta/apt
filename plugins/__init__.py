@@ -50,8 +50,6 @@ def apt_dependencies(config_model, resource_model):
 class AptPackage(ResourceHandler):
     """
     A Package handler that uses apt
-
-    TODO: add latest support
     """
 
     def __init__(self, agent, io=None):
