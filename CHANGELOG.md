@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.4.25 - ?
+
+
 ## v0.4.24 - 2024-02-19
 
 - remove a todo from the docs
